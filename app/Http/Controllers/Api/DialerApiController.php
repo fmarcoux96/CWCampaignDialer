@@ -35,6 +35,9 @@ class DialerApiController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => 'Dialer is not in hours',
+                'now' => now($this->hoursOptions->timezone),
+                'next_run_time' => $this->hoursOptions->nextRunTime()->format('H:i'),
+                'hours' => $this->hoursOptions->getHoursForDay(),
             ]);
         }
 

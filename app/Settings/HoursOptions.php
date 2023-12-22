@@ -78,6 +78,19 @@ class HoursOptions extends Settings
         return $now->copy()->setTimeFromTimeString($start);
     }
 
+    public function getHoursForDay(?string $day = null)
+    {
+        $day = $day ?? strtolower(now($this->timezone)->format('l'));
+
+        $hours = $this->$day;
+
+        if ($hours['state'] === 'closed') {
+            return [];
+        }
+
+        return [$hours['start'], $hours['end']];
+    }
+
     public static function getTimezones()
     {
         $timezones = [];

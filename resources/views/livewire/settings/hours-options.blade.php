@@ -1,11 +1,11 @@
 <div>
     <x-form-section submit="save">
         <x-slot name="title">
-            {{ __('3CX Dialer') }}
+            {{ __('Hours & Timezone') }}
         </x-slot>
 
         <x-slot name="description">
-            {{ __('Configure the 3CX Call Flow Dialer options.') }}
+            {{ __('Configure the hours and timezone for the dialer operations.') }}
         </x-slot>
 
         <x-slot name="form">

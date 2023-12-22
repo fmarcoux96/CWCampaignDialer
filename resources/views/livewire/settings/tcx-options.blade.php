@@ -5,7 +5,7 @@
         </x-slot>
 
         <x-slot name="description">
-            {{ __('Configure the 3CX Call Flow Dialer options.') }}
+            {{ __('Configure the 3CX outbound dialing options.') }}
         </x-slot>
 
         <x-slot name="form">

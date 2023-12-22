@@ -5,7 +5,7 @@
         </x-slot>
 
         <x-slot name="description">
-            {{ __('Update your dialer settings.') }}
+            {{ __('Configure the dialer behaviors.') }}
         </x-slot>
 
         <x-slot name="form">

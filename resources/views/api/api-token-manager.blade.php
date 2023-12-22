@@ -1,4 +1,25 @@
 <div>
+    <!-- API URL -->
+    <x-form-section submit="createApiToken">
+        <x-slot name="title">
+            {{ __('API URL') }}
+        </x-slot>
+
+        <x-slot name="description">
+            {{ __('The API FQDN to use in 3CX parameters.') }}
+        </x-slot>
+
+        <x-slot name="form">
+            <!-- Token Name -->
+            <div class="col-span-6 sm:col-span-4">
+                <x-label for="name" value="{{ __('API FQDN') }}" />
+                <x-input id="name" type="text" class="mt-1 block w-full" :value="request()->host()" readonly />
+            </div>
+        </x-slot>
+    </x-form-section>
+
+    <x-section-border />
+
     <!-- Generate API Token -->
     <x-form-section submit="createApiToken">
         <x-slot name="title">
