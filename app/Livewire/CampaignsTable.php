@@ -2,9 +2,9 @@
 
 namespace App\Livewire;
 
+use App\Models\Campaign;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
-use App\Models\Campaign;
 use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
 use Rappasoft\LaravelLivewireTables\Views\Columns\ComponentColumn;
 use WireUi\Traits\Actions;
@@ -74,6 +74,7 @@ class CampaignsTable extends DataTableComponent
             ->setPerPage(10)
             ->setDefaultSort('campaign_name', 'asc')
             ->setTableRowUrl(fn (Campaign $row) => route('campaigns.show', $row))
+            ->setEmptyMessage(__('No campaigns found'))
             ->setConfigurableAreas([
                 'toolbar-right-end' => 'components.campaigns.add-campaign',
             ]);
@@ -101,10 +102,10 @@ class CampaignsTable extends DataTableComponent
                 ->sortable(),
             BooleanColumn::make(__('Processed'), 'campaign_file_processed')
                 ->sortable(),
-            Column::make(__('Created'), "created_at")
+            Column::make(__('Created'), 'created_at')
                 ->sortable()
                 ->format(fn ($value, Campaign $row, Column $column) => $row->created_at->ago()),
-            Column::make(__('Updated'), "updated_at")
+            Column::make(__('Updated'), 'updated_at')
                 ->sortable()
                 ->format(fn ($value, Campaign $row, Column $column) => $row->updated_at->ago()),
             ComponentColumn::make(__('Actions'), 'id')

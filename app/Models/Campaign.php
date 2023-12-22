@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -41,6 +39,15 @@ class Campaign extends Model
         'entries',
         'calls',
     ];
+
+    public static function booted()
+    {
+        parent::booted();
+
+        static::deleting(function ($campaign) {
+            $campaign->entries()->delete();
+        });
+    }
 
     public function entries()
     {

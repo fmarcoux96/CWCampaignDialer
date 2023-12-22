@@ -16,6 +16,7 @@ class DialerOptions extends Component
         'options.default_campaign_destination' => ['required', 'string', 'max:5'],
         'options.max_call_attempts' => ['required', 'integer', 'min:1', 'max:10'],
         'options.hours_before_retry' => ['required', 'integer', 'min:1'],
+        'options.attempt_delay' => ['required', 'integer', 'min:1', 'max:3600'],
     ];
 
     public function mount()

@@ -6,23 +6,45 @@ use App\Http\Controllers\Controller;
 use App\Models\CallAttempt;
 use App\Models\CampaignEntry;
 use App\Settings\DialerOptions;
+use App\Settings\HoursOptions;
+use App\Settings\TcxOptions;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class DialerApiController extends Controller
 {
-    public function __construct(private readonly DialerOptions $options)
-    {
+    public function __construct(
+        private readonly DialerOptions $dialerOptions,
+        private readonly TcxOptions $tcxOptions,
+        private readonly HoursOptions $hoursOptions,
+    ) {
     }
 
     public function nextCall(Request $request)
     {
         $this->updateLastRun();
 
-        if (!$this->options->dialer_enabled) {
+        if (! $this->dialerOptions->dialer_enabled) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Dialer is disabled',
+            ]);
+        }
+
+        if (! $this->hoursOptions->inHours()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Dialer is not in hours',
+            ]);
+        }
+
+        if (! $this->dialerOptions->dialer_last_run->addSeconds($this->dialerOptions->attempt_delay)->isBefore(now())) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Dialer is not ready to run',
+                'last_run' => $this->dialerOptions->dialer_last_run,
+                'next_run' => $this->dialerOptions->dialer_last_run->addSeconds($this->dialerOptions->attempt_delay),
+                'delay' => $this->dialerOptions->attempt_delay,
             ]);
         }
 
@@ -33,24 +55,24 @@ class DialerApiController extends Controller
             ->upcoming()
             ->first();
 
-        if (!$nextEntry) {
+        if (! $nextEntry) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'No next entries found',
             ]);
         }
 
-        $attempt = $nextEntry->calls()->create([
+        $callAttempt = $nextEntry->calls()->create([
             'call_attempt_start' => now(),
         ]);
 
         return response()->json([
             'status' => 'success',
             'message' => 'Next entry found',
-            'entry' => $nextEntry,
-            'attempt' => $attempt,
-            'number' => $nextEntry->entry_phone_number,
-            'destination' => $nextEntry->campaign->campaign_destination ?? $this->options->default_campaign_destination,
+            'entry' => $nextEntry->withoutRelations(),
+            'attempt' => $callAttempt->withoutRelations(),
+            'number' => $this->formatDialingNumber($nextEntry->entry_phone_number),
+            'destination' => $nextEntry->entry_destination ?? $nextEntry->campaign->campaign_destination ?? $this->dialerOptions->default_campaign_destination,
         ]);
     }
 
@@ -60,7 +82,7 @@ class DialerApiController extends Controller
 
         $call = CallAttempt::find($id);
 
-        if (!$call) {
+        if (! $call) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Call not found',
@@ -89,7 +111,18 @@ class DialerApiController extends Controller
 
     private function updateLastRun()
     {
-        $this->options->dialer_last_run = now();
-        $this->options->save();
+        $this->dialerOptions->dialer_last_run = now();
+        $this->dialerOptions->save();
+    }
+
+    private function formatDialingNumber(mixed $entry_phone_number)
+    {
+        $number = preg_replace('/[^0-9]/', '', $entry_phone_number);
+
+        if (!empty($this->tcxOptions->tcx_prefix)) {
+            return $this->tcxOptions->tcx_prefix . $number;
+        }
+
+        return $number;
     }
 }

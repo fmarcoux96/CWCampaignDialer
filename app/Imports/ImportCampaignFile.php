@@ -4,15 +4,12 @@ namespace App\Imports;
 
 use App\Models\Campaign;
 use App\Models\CampaignEntry;
-use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class ImportCampaignFile implements ToModel, WithHeadingRow, WithBatchInserts, WithChunkReading
+class ImportCampaignFile implements ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow
 {
     public function __construct(private readonly Campaign $campaign)
     {
@@ -36,7 +33,6 @@ class ImportCampaignFile implements ToModel, WithHeadingRow, WithBatchInserts, W
     {
         return 100;
     }
-
 
     public function chunkSize(): int
     {

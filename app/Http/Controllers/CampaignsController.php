@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Exports\SampleUploadFile;
 use App\Models\Campaign;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Excel;
 
 class CampaignsController extends Controller
 {

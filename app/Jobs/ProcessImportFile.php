@@ -5,7 +5,6 @@ namespace App\Jobs;
 use App\Imports\ImportCampaignFile;
 use App\Models\Campaign;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -38,7 +37,7 @@ class ProcessImportFile implements ShouldQueue
         ]);
 
         $file = storage_path('app/'.$this->campaign->campaign_file);
-        if (!file_exists($file)) {
+        if (! file_exists($file)) {
             \Log::error('IMPORT: Failed', [
                 'campaign' => $this->campaign,
                 'message' => 'File not found',

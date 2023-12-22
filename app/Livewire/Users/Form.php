@@ -3,7 +3,6 @@
 namespace App\Livewire\Users;
 
 use App\Models\User;
-use Livewire\Component;
 use LivewireUI\Modal\ModalComponent;
 use WireUi\Traits\Actions;
 
@@ -14,6 +13,7 @@ class Form extends ModalComponent
     public User $user;
 
     public ?string $newPassword = null;
+
     public ?string $newPasswordConfirmation = null;
 
     protected $rules = [
@@ -24,7 +24,7 @@ class Form extends ModalComponent
         'newPasswordConfirmation' => 'nullable|string|min:8|same:newPassword',
     ];
 
-    public function mount(User $user = null)
+    public function mount(?User $user = null)
     {
         $this->user = $user ?? new User();
     }

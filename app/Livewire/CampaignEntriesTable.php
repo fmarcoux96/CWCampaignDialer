@@ -3,10 +3,10 @@
 namespace App\Livewire;
 
 use App\Models\Campaign;
+use App\Models\CampaignEntry;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
-use App\Models\CampaignEntry;
 use Rappasoft\LaravelLivewireTables\Views\Columns\ComponentColumn;
 use WireUi\Traits\Actions;
 
@@ -77,6 +77,7 @@ class CampaignEntriesTable extends DataTableComponent
             ->setPerPageAccepted([10, 25, 50, 100])
             ->setPerPage(25)
             ->setDefaultSort('created_at', 'asc')
+            ->setEmptyMessage(__('No entries found'))
             ->setConfigurableAreas([
                 'toolbar-right-end' => 'components.campaigns.add-entry',
             ]);
@@ -85,31 +86,31 @@ class CampaignEntriesTable extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make(__('ID'), "entry_id")
+            Column::make(__('ID'), 'entry_id')
                 ->sortable(),
-            Column::make(__('Name'), "entry_name")
+            Column::make(__('Name'), 'entry_name')
                 ->sortable()
                 ->searchable(),
-            Column::make(__('Phone'), "entry_phone_number")
+            Column::make(__('Phone'), 'entry_phone_number')
                 ->sortable()
                 ->searchable(),
-            Column::make(__('Source'), "entry_source")
+            Column::make(__('Source'), 'entry_source')
                 ->sortable()
                 ->searchable(),
             /*Column::make(__('Destination'), "entry_destination")
                 ->sortable()
                 ->searchable(),*/
-            Column::make(__('Notes'), "entry_notes")
+            Column::make(__('Notes'), 'entry_notes')
                 ->sortable()
                 ->searchable(),
-            Column::make(__('Attempts'), "id")
+            Column::make(__('Attempts'), 'id')
                 ->sortable()
                 ->searchable()
                 ->format(fn ($value, CampaignEntry $row, Column $column) => $row->calls_count),
-            Column::make(__('Created'), "created_at")
+            Column::make(__('Created'), 'created_at')
                 ->sortable()
                 ->format(fn ($value, CampaignEntry $row, Column $column) => $row->created_at->ago()),
-            Column::make(__('Updated'), "updated_at")
+            Column::make(__('Updated'), 'updated_at')
                 ->sortable()
                 ->format(fn ($value, CampaignEntry $row, Column $column) => $row->updated_at->ago()),
             ComponentColumn::make(__('Actions'), 'id')

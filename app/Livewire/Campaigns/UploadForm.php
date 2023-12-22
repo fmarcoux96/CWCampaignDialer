@@ -5,7 +5,6 @@ namespace App\Livewire\Campaigns;
 use App\Jobs\ProcessImportFile;
 use App\Models\Campaign;
 use App\Settings\DialerOptions;
-use Livewire\Component;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Livewire\WithFileUploads;
 use LivewireUI\Modal\ModalComponent;
@@ -31,11 +30,11 @@ class UploadForm extends ModalComponent
         'uploadFile' => 'nullable|file', // 'nullable|file|extensions:xls,xlsx,csv|mimes:xls,xlsx,csv,txt',
     ];
 
-    public function mount(Campaign $campaign = null)
+    public function mount(?Campaign $campaign = null)
     {
         $this->campaign = $campaign ?? new Campaign();
 
-        if (!$this->campaign->exists) {
+        if (! $this->campaign->exists) {
             $this->campaign->start_date = now();
             $this->campaign->campaign_destination = app(DialerOptions::class)->default_campaign_destination;
         }
@@ -46,7 +45,7 @@ class UploadForm extends ModalComponent
         $this->validate();
 
         try {
-            if ($this->uploadFile && !$this->campaign->exists) {
+            if ($this->uploadFile && ! $this->campaign->exists) {
                 $this->processFile();
             }
 

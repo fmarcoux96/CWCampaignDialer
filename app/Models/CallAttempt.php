@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -18,6 +17,7 @@ class CallAttempt extends Model
         'call_attempt_end',
         'successful',
         'error_message',
+        'call_disposition',
     ];
 
     protected $casts = [

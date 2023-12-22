@@ -7,7 +7,15 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <livewire:settings.tcx-options />
+
+            <x-section-border />
+
             <livewire:settings.dialer-options />
+
+            <x-section-border />
+
+            <livewire:settings.hours-options />
         </div>
     </div>
 </x-app-layout>

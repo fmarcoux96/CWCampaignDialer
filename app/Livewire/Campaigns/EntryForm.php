@@ -4,7 +4,6 @@ namespace App\Livewire\Campaigns;
 
 use App\Models\Campaign;
 use App\Models\CampaignEntry;
-use Livewire\Component;
 use LivewireUI\Modal\ModalComponent;
 use WireUi\Traits\Actions;
 

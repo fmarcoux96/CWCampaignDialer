@@ -72,6 +72,7 @@ class UsersTable extends DataTableComponent
             ->setPerPageAccepted([10, 25, 50, 100])
             ->setPerPage(10)
             ->setDefaultSort('name', 'asc')
+            ->setEmptyMessage(__('No users found'))
             ->setConfigurableAreas([
                 'toolbar-right-end' => 'components.users.add-user',
             ]);
@@ -80,16 +81,16 @@ class UsersTable extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make(__('Name'), "name")
+            Column::make(__('Name'), 'name')
                 ->sortable()
                 ->searchable(),
-            Column::make(__('Email'), "email")
+            Column::make(__('Email'), 'email')
                 ->sortable()
                 ->searchable(),
-            Column::make(__('Role'), "role")
+            Column::make(__('Role'), 'role')
                 ->sortable()
                 ->format(fn ($value, User $row, Column $column) => $row->role_name),
-            Column::make("Updated at", "updated_at")
+            Column::make('Updated at', 'updated_at')
                 ->sortable()
                 ->format(fn ($value, User $row, Column $column) => $row->updated_at->ago()),
             ComponentColumn::make(__('Actions'), 'id')
