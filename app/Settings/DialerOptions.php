@@ -19,9 +19,22 @@ class DialerOptions extends Settings
 
     public ?Carbon $dialer_last_run;
 
+    public function lastRunAgo(): int|null
+    {
+        if ($this->dialer_last_run === null) {
+            return null;
+        }
+
+        return $this->dialer_last_run?->diffInMinutes(now()) ?? 0;
+    }
+
     public function hasNotRanInAWhile(): bool
     {
-        return $this->dialer_last_run?->diffInMinutes(now()) > 2 ?? true;
+        if ($this->lastRunAgo() === null) {
+            return true;
+        }
+
+        return $this->lastRunAgo() > 2;
     }
 
     public static function group(): string

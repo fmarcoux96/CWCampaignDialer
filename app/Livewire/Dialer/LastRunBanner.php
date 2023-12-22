@@ -25,7 +25,7 @@ class LastRunBanner extends Component
     {
         return view('livewire.dialer.last-run-banner', [
             'dialerExtension' => app(TcxOptions::class)->dialer_extension,
-            'minutes' => $this->lastRun->diffInMinutes(now()),
+            'minutes' => app(DialerOptions::class)->lastRunAgo(),
         ]);
     }
 }
