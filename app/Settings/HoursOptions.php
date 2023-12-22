@@ -55,6 +55,7 @@ class HoursOptions extends Settings
 
     public function nextRunTime()
     {
+        // Get the next run time, if tomorrow, set date to tomorrow as well
         $now = now($this->timezone);
 
         $day = strtolower($now->format('l'));
@@ -62,20 +63,18 @@ class HoursOptions extends Settings
         $hours = $this->$day;
 
         if ($hours['state'] === 'closed') {
-            return $now->copy()->setTimeFromTimeString($hours['start']);
+            return null;
         }
 
         $start = $hours['start'];
-        $end = $hours['end'];
 
-        if ($now->isBetween(
-            $now->copy()->setTimeFromTimeString($start),
-            $now->copy()->setTimeFromTimeString($end)
-        )) {
-            return $now->copy()->setTimeFromTimeString($end);
+        $nextRunTime = $now->copy()->setTimeFromTimeString($start);
+
+        if ($nextRunTime->isBefore($now)) {
+            $nextRunTime->addDay();
         }
 
-        return $now->copy()->setTimeFromTimeString($start);
+        return $nextRunTime;
     }
 
     public function getHoursForDay(?string $day = null)

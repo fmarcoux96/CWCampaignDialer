@@ -20,12 +20,12 @@ class ImportCampaignFile implements ToModel, WithBatchInserts, WithChunkReading,
     {
         return new CampaignEntry([
             'campaign_id' => $this->campaign->id,
-            'entry_id' => $row['id'],
-            'entry_name' => $row['name'],
-            'entry_phone_number' => $this->formatPhoneNumber($row['number']),
-            'entry_source' => $row['source'],
-            'entry_notes' => $row['notes'],
-            'entry_created_at' => $row['created_at'],
+            'entry_id' => $row['id'] ?? null,
+            'entry_name' => $row['name'] ?? null,
+            'entry_phone_number' => $this->formatPhoneNumber($row['number']) ?? null,
+            'entry_source' => $row['source'] ?? null,
+            'entry_notes' => $row['notes'] ?? null,
+            'entry_created_at' => $row['created_at'] ?? null,
         ]);
     }
 

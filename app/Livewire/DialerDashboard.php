@@ -91,11 +91,11 @@ class DialerDashboard extends Component
         if (! $isInHours) {
             return app(HoursOptions::class)
                 ->nextRunTime()
-                ->format('H:i');
+                ?->format('H:i') ?? __('N/A');
         }
 
         return $lastRunTime
-            ->addSeconds(app(DialerOptions::class)->attempt_delay)
-            ->format('H:i');
+            ?->addSeconds(app(DialerOptions::class)->attempt_delay)
+            ->format('H:i') ?? __('N/A');
     }
 }
