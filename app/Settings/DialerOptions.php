@@ -21,7 +21,7 @@ class DialerOptions extends Settings
 
     public function hasNotRanInAWhile(): bool
     {
-        return $this->dialer_last_run->diffInMinutes(now()) > 2;
+        return $this->dialer_last_run?->diffInMinutes(now()) > 2 ?? true;
     }
 
     public static function group(): string
