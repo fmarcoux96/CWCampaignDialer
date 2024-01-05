@@ -18,6 +18,10 @@ class ImportCampaignFile implements ToModel, WithBatchInserts, WithChunkReading,
 
     public function model(array $row)
     {
+        if ($row['number'] === null) {
+            return null;
+        }
+
         return new CampaignEntry([
             'campaign_id' => $this->campaign->id,
             'entry_id' => $row['id'] ?? null,
@@ -39,8 +43,12 @@ class ImportCampaignFile implements ToModel, WithBatchInserts, WithChunkReading,
         return 100;
     }
 
-    private function formatPhoneNumber(string $value): string
+    private function formatPhoneNumber(?string $value): ?string
     {
+        if (is_null($value)) {
+            return null;
+        }
+
         // Remove all characters except digits from the value
         return preg_replace('/[^0-9]/', '', $value);
     }

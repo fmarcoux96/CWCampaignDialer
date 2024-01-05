@@ -53,8 +53,8 @@
                         </div>
                         <div class="col-span-1">
                             <x-w-select
-                                wire:model="options.{{ $day }}.start"
-                                label="{{ __('Start') }}"
+                                wire:model="options.{{ $day }}.end"
+                                label="{{ __('End') }}"
                                 :options="$hours"
                                 option-key-value
                                 :clearable="false"
