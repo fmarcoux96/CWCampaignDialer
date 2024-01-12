@@ -41,7 +41,7 @@
                     wire:model="options.dialing_timeout"
                     label="{{ __('Dialing Timeout') }}"
                     hint="{{ __('Enter the number of seconds to wait for the dialer to connect the call before giving up.') }}"
-                    required
+                    disabled
                 />
             </div>
         </x-slot>
