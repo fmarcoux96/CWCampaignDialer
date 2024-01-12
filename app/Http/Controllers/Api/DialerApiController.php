@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\CallAttempt;
+use App\Models\Campaign;
 use App\Models\CampaignEntry;
 use App\Settings\DialerOptions;
 use App\Settings\HoursOptions;
@@ -18,6 +19,24 @@ class DialerApiController extends Controller
         private readonly TcxOptions $tcxOptions,
         private readonly HoursOptions $hoursOptions,
     ) {
+    }
+
+    public function getCampaigns(Request $request)
+    {
+        $campaigns = Campaign::query()
+            ->without('entries')
+            ->withCount('entries')
+            ->current()
+            ->whereHas('entries', function (Builder $query) {
+                $query->remaining();
+            })
+            ->get();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Campaigns found',
+            'campaigns' => $campaigns,
+        ]);
     }
 
     public function nextCall(Request $request)
@@ -51,9 +70,19 @@ class DialerApiController extends Controller
             ]);
         }
 
+        $campaignId = $request->route('id');
+        if (!$campaignId) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No campaign provided',
+            ]);
+        }
+
         $nextEntry = CampaignEntry::query()
-            ->whereHas('campaign', function (Builder $query) {
-                $query->current();
+            ->whereHas('campaign', function (Builder $query) use ($campaignId) {
+                $query
+                    ->current()
+                    ->where('id', $campaignId);
             })
             ->upcoming()
             ->first();
@@ -76,6 +105,10 @@ class DialerApiController extends Controller
             'attempt' => $callAttempt->withoutRelations(),
             'number' => $this->formatDialingNumber($nextEntry->entry_phone_number),
             'destination' => $nextEntry->entry_destination ?? $nextEntry->campaign->campaign_destination ?? $this->dialerOptions->default_campaign_destination,
+            'options' => [
+                'timeout' => $this->tcxOptions->dialing_timeout,
+                'prefix' => $this->tcxOptions->dialing_prefix,
+            ],
         ]);
     }
 

@@ -19,7 +19,10 @@ Route::middleware('auth:sanctum')->group(function () {
         return $request->user();
     });
 
-    Route::get('/next', [\App\Http\Controllers\Api\DialerApiController::class, 'nextCall'])
+    Route::get('/campaigns', [\App\Http\Controllers\Api\DialerApiController::class, 'getCampaigns'])
+        ->name('api.dialer.get-campaigns');
+
+    Route::get('/next/{id}', [\App\Http\Controllers\Api\DialerApiController::class, 'nextCall'])
         ->name('api.dialer.next');
 
     Route::post('/update', [\App\Http\Controllers\Api\DialerApiController::class, 'updateCall'])
