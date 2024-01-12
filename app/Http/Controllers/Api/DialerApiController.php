@@ -23,6 +23,8 @@ class DialerApiController extends Controller
 
     public function getCampaigns(Request $request)
     {
+        $this->updateLastRun();
+
         $campaigns = Campaign::query()
             ->without('entries')
             ->withCount('entries')
@@ -114,6 +116,8 @@ class DialerApiController extends Controller
 
     public function updateCall(Request $request)
     {
+        $this->updateLastRun();
+        
         $id = $request->input('id');
 
         $call = CallAttempt::find($id);
