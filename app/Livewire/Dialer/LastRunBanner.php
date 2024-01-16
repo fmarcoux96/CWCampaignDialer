@@ -17,7 +17,7 @@ class LastRunBanner extends Component
     {
         $config = app(DialerOptions::class);
 
-        $this->lastRun = $config->dialer_last_run;
+        $this->lastRun = $config->dialer_health_check;
         $this->shouldShow = $config->hasNotRanInAWhile();
     }
 
@@ -25,7 +25,7 @@ class LastRunBanner extends Component
     {
         return view('livewire.dialer.last-run-banner', [
             'dialerExtension' => app(TcxOptions::class)->dialer_extension,
-            'minutes' => app(DialerOptions::class)->lastRunAgo(),
+            'minutes' => app(DialerOptions::class)->lastHealthCheck(),
         ]);
     }
 }
