@@ -62,12 +62,12 @@ class DialerApiController extends Controller
             ]);
         }
 
-        if (! $this->dialerOptions->dialer_last_run->addSeconds($this->dialerOptions->attempt_delay)->isBefore(now())) {
+        if (! $this->dialerOptions->dialer_last_run->copy()->addSeconds($this->dialerOptions->attempt_delay)->isBefore(now())) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Dialer is not ready to run',
                 'last_run' => $this->dialerOptions->dialer_last_run,
-                'next_run' => $this->dialerOptions->dialer_last_run->addSeconds($this->dialerOptions->attempt_delay),
+                'next_run' => $this->dialerOptions->dialer_last_run->copy()->addSeconds($this->dialerOptions->attempt_delay),
                 'delay' => $this->dialerOptions->attempt_delay,
             ]);
         }
