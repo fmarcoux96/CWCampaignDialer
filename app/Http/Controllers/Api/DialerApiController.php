@@ -23,7 +23,7 @@ class DialerApiController extends Controller
 
     public function getCampaigns(Request $request)
     {
-        $this->updateLastRun();
+        $this->healthCheck();
 
         $campaigns = Campaign::query()
             ->without('entries')
@@ -43,7 +43,7 @@ class DialerApiController extends Controller
 
     public function nextCall(Request $request)
     {
-        $this->updateLastRun();
+        $this->healthCheck();
 
         if (! $this->dialerOptions->dialer_enabled) {
             return response()->json([
@@ -116,8 +116,8 @@ class DialerApiController extends Controller
 
     public function updateCall(Request $request)
     {
-        $this->updateLastRun();
-        
+        $this->healthCheck();
+
         $id = $request->input('id');
 
         $call = CallAttempt::find($id);
@@ -149,9 +149,9 @@ class DialerApiController extends Controller
         ]);
     }
 
-    private function updateLastRun()
+    private function healthCheck()
     {
-        $this->dialerOptions->dialer_last_run = now();
+        $this->dialerOptions->dialer_health_check = now();
         $this->dialerOptions->save();
     }
 

@@ -19,7 +19,9 @@ class DialerOptions extends Settings
 
     public ?Carbon $dialer_last_run;
 
-    public function lastRunAgo(): int|null
+    public ?Carbon $dialer_health_check;
+
+    public function lastHealthCheck(): int|null
     {
         if ($this->dialer_last_run === null) {
             return null;
@@ -30,11 +32,11 @@ class DialerOptions extends Settings
 
     public function hasNotRanInAWhile(): bool
     {
-        if ($this->lastRunAgo() === null) {
+        if ($this->lastHealthCheck() === null) {
             return true;
         }
 
-        return $this->lastRunAgo() > 2;
+        return $this->lastHealthCheck() > 2;
     }
 
     public static function group(): string
