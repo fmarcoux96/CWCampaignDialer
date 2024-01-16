@@ -57,7 +57,7 @@ class Campaign extends Model
 
     public function calls()
     {
-        return $this->hasManyThrough(CallAttempt::class, CampaignEntry::class)
+        return $this->hasManyThrough(CallAttempt::class, CampaignEntry::class, 'campaign_id', 'campaign_entry_id', 'id', 'id')
             ->orderBy('created_at', 'desc');
     }
 

@@ -51,7 +51,7 @@ class CampaignEntry extends Model
 
     public function calls()
     {
-        return $this->belongsToMany(CallAttempt::class, 'campaign_entry_id')
+        return $this->hasMany(CallAttempt::class, 'campaign_entry_id')
             ->orderBy('created_at', 'desc');
     }
 
