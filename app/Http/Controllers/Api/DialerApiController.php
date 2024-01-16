@@ -100,6 +100,8 @@ class DialerApiController extends Controller
             'call_attempt_start' => now(),
         ]);
 
+        $this->updateLastRun();
+
         return response()->json([
             'status' => 'success',
             'message' => 'Next entry found',
@@ -147,6 +149,12 @@ class DialerApiController extends Controller
             'status' => 'success',
             'message' => 'Call updated',
         ]);
+    }
+
+    private function updateLastRun()
+    {
+        $this->dialerOptions->dialer_last_run = now();
+        $this->dialerOptions->save();
     }
 
     private function healthCheck()
