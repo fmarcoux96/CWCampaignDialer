@@ -23,11 +23,11 @@ class DialerOptions extends Settings
 
     public function lastHealthCheck(): int|null
     {
-        if ($this->dialer_last_run === null) {
+        if ($this->dialer_health_check === null) {
             return null;
         }
 
-        return $this->dialer_last_run?->diffInMinutes(now()) ?? 0;
+        return $this->dialer_health_check?->diffInMinutes(now()) ?? 0;
     }
 
     public function hasNotRanInAWhile(): bool
