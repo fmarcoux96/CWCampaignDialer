@@ -41,6 +41,7 @@
                     required
                     without-time
                     without-tips
+                    hint="{!! __('Dates are inclusive.') !!}"
                 />
             </div>
 
@@ -51,7 +52,7 @@
                     wire:model="campaign.end_date"
                     without-time
                     without-tips
-                    hint="{!! __('Leave empty to run until all calls are made.') !!}"
+                    hint="{!! __('Dates are inclusive. Leave empty to run until all calls are made.') !!}"
                 />
             </div>
 
