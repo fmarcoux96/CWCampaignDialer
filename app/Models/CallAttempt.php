@@ -37,7 +37,7 @@ class CallAttempt extends Model
 
     public function campaign()
     {
-        return $this->hasOneThrough(Campaign::class, CampaignEntry::class);
+        return $this->hasOneThrough(Campaign::class, CampaignEntry::class, 'id', 'id', 'campaign_entry_id', 'campaign_id');
     }
 
     public function scopeAttempted($query)
