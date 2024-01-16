@@ -40,7 +40,7 @@ class CallAttemptsTable extends DataTableComponent
 
         if ($this->slim) {
             $this
-                ->setRefreshVisible()
+                ->setRefreshTime('5s')
                 ->setPaginationStatus(false)
                 ->setSearchStatus(false)
                 ->setPerPageVisibilityStatus(false)
