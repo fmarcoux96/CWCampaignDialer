@@ -39,7 +39,9 @@ class CallAttemptsTable extends DataTableComponent
             ->setDefaultSort('call_attempts.created_at', 'desc');
 
         if ($this->slim) {
-            $this->setPaginationStatus(false)
+            $this
+                ->setRefreshVisible()
+                ->setPaginationStatus(false)
                 ->setSearchStatus(false)
                 ->setPerPageVisibilityStatus(false)
                 ->setPaginationVisibilityStatus(false)
